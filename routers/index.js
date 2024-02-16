@@ -1,10 +1,11 @@
 //  i will consume it in my index.js from routers.
 
-import userRouter from "../api/users";
-import server from "../server";
+import profileRouter from "../api/profiles/index.js";
+import userRouter from "../api/users/index.js";
 
-// import profileRouter from "../api/profiles";
-// import userRouter from "../api/users";
-
-server.use("/api/users", userRouter);
-server.use("/api/profiles", profileRouter);
+const router = (app) => {
+  app.use("/api/users", userRouter);
+  app.use("/api/profiles", profileRouter);
+  console.log("inside the router");
+};
+export default router;
