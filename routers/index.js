@@ -1,11 +1,11 @@
-//  i will consume it in my index.js from routers.
-
-import profileRouter from "../api/profiles/index.js";
+import express from "express";
 import userRouter from "../api/users/index.js";
-
-const router = (app) => {
-  app.use("/api/users", userRouter);
-  app.use("/api/profiles", profileRouter);
-  console.log("inside the router");
+import profileRouter from "../api/profiles/index.js";
+const generateVersionRouter = (version) => {
+  const router = express.Router();
+  router.use("/users", userRouter);
+  router.use("/profile", profileRouter);
+  // router.use("/posts", postRouter);
+  return router;
 };
-export default router;
+export default generateVersionRouter;
