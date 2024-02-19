@@ -21,3 +21,5 @@ const authMiddleware = (req, res, next) => {
     res.status(500).json({ error: "server error" });
   }
 };
+
+export default authMiddleware;

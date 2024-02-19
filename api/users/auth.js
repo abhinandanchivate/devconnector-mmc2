@@ -3,12 +3,22 @@ import { check, validationResult } from "express-validator";
 import UserModel2 from "../../models/UserModels2.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import authMiddleware from "../../middleware/authMiddleware.js";
 const authRouter = express.Router();
 // @route    GET api/auth
 // @desc     Get user by token
 // @access   Private
 // header should contain 'Authorization token  and we will get it via x-auth-token header.
 
+authRouter.get("/", authMiddleware, async (req, res) => {
+  try {
+    const user = await UserModel2.findById(req.user.id).select("-password");
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "server error" });
+  }
+});
 // @route    POST api/auth
 // @desc     Authenticate user & get token
 // @access   Public
