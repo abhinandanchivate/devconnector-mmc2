@@ -6,9 +6,12 @@ import profileRouter from "./api/profiles/index.js";
 import generateVersionRouter from "./routers/index.js";
 
 import { config } from "dotenv";
+import connectDB from "./config/db.config.js";
 const PORT = 3001;
 const app = server;
 config();
+// call connectDB method
+connectDB();
 // /api/v1
 //mountApiVersionRouter(app, "/api/v1/users", userRouter);
 // router(app);
