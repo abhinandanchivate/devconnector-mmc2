@@ -65,17 +65,13 @@ userRouter.post(
         // we will use the methods to generate the token
         const payload = { user: { id: user.id } }; // roles as well
         // we may add other tokens which are reqd for comm.
-        jwt.sign(
-          payload,
-          "jwtSecret",
-          { expiresIn: "5 days" },
-          (err, token) => {
-            if (err) {
-              throw err;
-            }
-            res.status(201).json({ token });
+        jwt.sign(payload, "jwtSecret", { expiresIn: 60 }, (err, token) => {
+          if (err) {
+            throw err;
           }
-        );
+          const userResponse = { ...user._doc, token };
+          res.status(201).json(userResponse);
+        });
 
         // res.status(201).json({ user }); // key will be user: value will be userObject from this code.
       }
@@ -86,3 +82,7 @@ userRouter.post(
   }
 );
 export default userRouter;
+
+// login : do we need to pass credentails and  we will get a new token as a response.
+// to get the usedetails based on the token
+// /auth/me:
