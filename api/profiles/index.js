@@ -49,6 +49,7 @@ profileRouter.post(
       const {
         website,
         skills,
+        status,
         youtube,
         twitter,
         facebook,
@@ -107,9 +108,50 @@ profileRouter.post(
 // @desc     Add profile experience
 // @access   Private
 
+profileRouter.put(
+  "/exp",
+  check("title", "Title is required").notEmpty(),
+  check("company", "company is required").notEmpty(),
+  check("from", "from date is required and needs to be from the past")
+    .notEmpty()
+    .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      // find out the profile.
+      const profile = await ProfileModels.findOne({ user: req.user.id });
+      // we have to add the exp details into the exp array.
+      profile.experience.unshift(req.body);
+
+      await profile.save();
+      res.json(profile);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "server error" });
+    }
+  }
+);
+
 // @route    DELETE api/profile/experience/:exp_id
 // @desc     Delete experience from profile
 // @access   Private
+
+profileRouter.delete("/exp/:exp_id", async (req, res) => {
+  try {
+    const profile = await ProfileModels.findOne({ user: req.user.id });
+    profile.experience = profile.experience.filter(
+      (e) => e._id.toString() !== req.params.exp_id
+    );
+    await profile.save();
+    res.status(200).json(profile);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "server error" });
+  }
+});
 
 // @route    PUT api/profile/education
 // @desc     Add profile education

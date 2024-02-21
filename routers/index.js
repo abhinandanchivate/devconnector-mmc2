@@ -4,6 +4,7 @@ import profileRouter from "../api/profiles/index.js";
 import authRouter from "../api/users/auth.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import publicProfileRouter from "../api/profiles/publicProfileEndPoints.js";
+import checkObjectId from "../middleware/checkObjectId.js";
 const generateVersionRouter = (version) => {
   const router = express.Router();
   router.use("/users", userRouter);

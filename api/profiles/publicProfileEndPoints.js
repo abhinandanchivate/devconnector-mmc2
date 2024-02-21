@@ -3,13 +3,20 @@ import ProfileModels from "../../models/ProfileModel.js";
 import { checkExact } from "express-validator";
 import checkObjectId from "../../middleware/checkObjectId.js";
 import UserModels2 from "../../models/UserModels2.js";
+import getGitHubRepos from "../../services/github.service.js";
 
 const publicProfileRouter = express.Router();
 
 // @route    GET api/profile/github/:username
 // @desc     Get user repos from Github(3rd party api calls )
 // @access   Public
+publicProfileRouter.get("/git/:username", async (req, res) => {
+  const { username } = req.params;
 
+  const result = await getGitHubRepos(username);
+  console.log("result data" + JSON.stringify(result));
+  res.json(result);
+});
 // @route    GET api/profile
 // @desc     Get all profiles
 // @access   Public

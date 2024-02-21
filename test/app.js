@@ -29,6 +29,11 @@ controller2Router.get("/route2", (req, res) => {
   res.json({ msg: "route2" });
 });
 
-app.use("/controller1", controller1MiddleWare, controller1Router);
+app.use(
+  "/controller1",
+  controller1MiddleWare,
+  controller2MiddleWare,
+  controller1Router
+);
 app.use("/controller2", controller2MiddleWare, controller2Router);
 app.listen(6000, () => {});
